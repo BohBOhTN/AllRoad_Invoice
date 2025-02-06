@@ -6,11 +6,11 @@ import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import InvoiceForm from './components/InvoiceForm';
 import InvoicesPage from './pages/InvoicesPage';
-import CreateInvoicePage from './pages/CreateInvoicePage';
 import ClientsPage from './pages/ClientsPage';
 import DeliveryRoutesPage from './pages/DeliveryRoutesPage';
 import ItemsPage from './pages/ItemsPage';
 import SettingsPage from './pages/SettingsPage';
+import InvoiceDetailPage from './pages/InvoiceDetailPage';
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
             <Route path="dashboard" element={<DashboardPage />} />
             <Route path="invoices" element={<InvoicesPage />} />
             <Route path="invoices/create" element={<InvoiceForm />} />
+            <Route path="invoices/:id" element={<InvoiceDetailPage />} />
             <Route path="clients" element={<ClientsPage />} />
             <Route path="routes" element={<DeliveryRoutesPage />} />
             <Route path="items" element={<ItemsPage />} />
