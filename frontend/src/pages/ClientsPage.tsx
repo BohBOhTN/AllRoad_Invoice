@@ -46,33 +46,33 @@ export default function ClientsPage() {
   return (
     <div>
       <h1 className="text-2xl font-semibold text-gray-900">Clients</h1>
-      <div className="my-4">
+      <div className="my-4 flex items-center">
         <input
           type="text"
           placeholder="Search clients..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded flex-grow"
         />
         <button onClick={() => openModal()} className="ml-4 bg-blue-500 text-white p-2 rounded">Add Client</button>
       </div>
-      <table className="min-w-full bg-white">
+      <table className="min-w-full bg-white border">
         <thead>
-          <tr>
-            <th className="py-2">Name</th>
-            <th className="py-2">Email</th>
-            <th className="py-2">Phone</th>
-            <th className="py-2">Actions</th>
+          <tr className="bg-gray-100">
+            <th className="py-2 px-4 border text-center">Name</th>
+            <th className="py-2 px-4 border text-center">Email</th>
+            <th className="py-2 px-4 border text-center">Phone</th>
+            <th className="py-2 px-4 border text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
           {filteredClients.map(client => (
-            <tr key={client.id}>
-              <td className="py-2">{client.name}</td>
-              <td className="py-2">{client.email}</td>
-              <td className="py-2">{client.phone}</td>
-              <td className="py-2">
-                <button onClick={() => openModal(client)} className="bg-yellow-500 text-white p-2 rounded mr-2">Edit</button>
+            <tr key={client.id} className="hover:bg-gray-50">
+              <td className="py-2 px-4 border text-center">{client.name}</td>
+              <td className="py-2 px-4 border text-center">{client.email}</td>
+              <td className="py-2 px-4 border text-center">{client.phone}</td>
+              <td className="py-2 px-4 border text-center flex justify-center space-x-2">
+                <button onClick={() => openModal(client)} className="bg-yellow-500 text-white p-2 rounded">Edit</button>
                 <button onClick={() => deleteClient(client.id)} className="bg-red-500 text-white p-2 rounded">Delete</button>
               </td>
             </tr>

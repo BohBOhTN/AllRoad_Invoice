@@ -12,6 +12,7 @@ import ItemsPage from './pages/ItemsPage';
 import SettingsPage from './pages/SettingsPage';
 import InvoiceDetailPage from './pages/InvoiceDetailPage';
 import ClientForm from './components/ClientForm';
+import DeliveryRouteForm from './components/DeliveryRouteForm';
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
             <Route path="clients/create" element={<ClientForm />} />
             <Route path="clients/edit/:id" element={<ClientForm />} />
             <Route path="routes" element={<DeliveryRoutesPage />} />
+            <Route path="routes/create" element={<DeliveryRouteForm />} />
+            <Route path="routes/edit/:id" element={<DeliveryRouteForm />} />
             <Route path="items" element={<ItemsPage />} />
             <Route path="settings" element={<SettingsPage />} />
             {/* Add more routes here */}
