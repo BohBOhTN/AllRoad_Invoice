@@ -5,10 +5,9 @@ interface InvoicePreviewProps {
   invoice: Partial<Invoice>;
   isOpen: boolean;
   onClose: () => void;
-  paymentMethods: string[];
 }
 
-function InvoicePreview({ invoice, isOpen, onClose, paymentMethods }: InvoicePreviewProps) {
+function InvoicePreview({ invoice, isOpen, onClose }: InvoicePreviewProps) {
   if (!isOpen) return null;
 
   return (
@@ -117,16 +116,6 @@ function InvoicePreview({ invoice, isOpen, onClose, paymentMethods }: InvoicePre
         <div className="mb-8">
           <p className="font-bold">RÈGLEMENT : virement de {invoice.total?.toFixed(2)}€</p>
           <p>ECHÉANCE : {invoice.payments?.[0]?.dueDate}</p>
-        </div>
-
-        {/* Payment Methods */}
-        <div className="mb-8">
-          <h2 className="font-bold mb-2">Payment Methods</h2>
-          {paymentMethods.map((method, index) => (
-            <div key={index}>
-              <p>{method}</p>
-            </div>
-          ))}
         </div>
 
         {/* Bank Details */}
