@@ -11,6 +11,7 @@ import DeliveryRoutesPage from './pages/DeliveryRoutesPage';
 import ItemsPage from './pages/ItemsPage';
 import SettingsPage from './pages/SettingsPage';
 import InvoiceDetailPage from './pages/InvoiceDetailPage';
+import ClientForm from './components/ClientForm';
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
             <Route path="invoices/create" element={<InvoiceForm />} />
             <Route path="invoices/:id" element={<InvoiceDetailPage />} />
             <Route path="clients" element={<ClientsPage />} />
+            <Route path="clients/create" element={<ClientForm />} />
+            <Route path="clients/edit/:id" element={<ClientForm />} />
             <Route path="routes" element={<DeliveryRoutesPage />} />
             <Route path="items" element={<ItemsPage />} />
             <Route path="settings" element={<SettingsPage />} />
