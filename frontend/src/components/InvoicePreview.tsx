@@ -30,7 +30,7 @@ function InvoicePreview({ invoice, isOpen, onClose }: InvoicePreviewProps) {
   const handleDownloadInvoice = () => {
     const input = document.getElementById("invoice-content");
     if (!input) return;
-    html2canvas(input).then((canvas) => {
+    html2canvas(input, { useCORS: true, allowTaint: false }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pageWidth = pdf.internal.pageSize.getWidth();
@@ -98,28 +98,52 @@ function InvoicePreview({ invoice, isOpen, onClose }: InvoicePreviewProps) {
           <CardContent id="invoice-content">
             {/* Header */}
             <Box display="flex" justifyContent="space-between" mb={3}>
+              {/* Left: Company Info */}
               <Box>
+                <img src="/allroad-logo.png" alt="ALLROAD" style={{ width: 120 }} />
                 <Typography variant="h5" fontWeight="bold">ALLROAD</Typography>
                 <Typography variant="body2">268-270 rue de brémenent</Typography>
                 <Typography variant="body2">93110 Rosny-Sous-Bois, France</Typography>
                 <Typography variant="body2">Siret: 84422444400035</Typography>
                 <Typography variant="body2">Email: allroad74trans@gmail.com</Typography>
               </Box>
+              {/* Right: Invoice and Client Info */}
               <Box textAlign="right">
-                <img src="/allroad-logo.png" alt="ALLROAD" style={{ width: 120, marginBottom: 8 }} />
-                <Typography variant="subtitle1" fontWeight="bold">FACTURE N° : {invoice.number}</Typography>
-                <Typography variant="body2">DATE : {invoice.date}</Typography>
-                <Typography variant="body2">N° TVA : FR82383960135</Typography>
-                <Typography variant="body2">N° client : CLT004</Typography>
+                {/* Invoice Info */}
+                <Box mb={2}>
+                  <Typography variant="h5" fontWeight="bold">FACTURE N° : {invoice.number}</Typography>
+                  <Typography variant="h6" fontWeight="bold">DATE : {invoice.date}</Typography>
+                  <Typography variant="body2">N° TVA : FR82383960135</Typography>
+                </Box>
+                {/* Client Info and Logo */}
+                <Box display="flex" alignItems="center" justifyContent="flex-end">
+                  <Box mr={2}>
+                    <Typography variant="h6" fontWeight="bold">
+                      {invoice.clientName || "Acme Corp"}
+                    </Typography>
+                    <Typography variant="body2">
+                      {invoice.clientAddress || "268-270 rue de brémenent"}
+                    </Typography>
+                    <Typography variant="body2">
+                      {invoice.clientCity || "93110 Rosny-Sous-Bois, France"}
+                    </Typography>
+                    <Typography variant="body2">
+                      {invoice.clientSiret || "Siret: 84422444400035"}
+                    </Typography>
+                    <Typography variant="body2">
+                      {invoice.clientEmail || "Email: allroad74trans@gmail.com"}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <img 
+                      src="https://picsum.photos/80" 
+                      alt="Client Logo" 
+                      crossOrigin="anonymous"
+                      style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 4 }} 
+                    />
+                  </Box>
+                </Box>
               </Box>
-            </Box>
-
-            {/* Client Info */}
-            <Box mb={3} p={2} bgcolor="grey.100" borderRadius={1}>
-              <Typography variant="h6" fontWeight="bold">CHRONOPOST</Typography>
-              <Typography variant="body2">2 CHEMIN DES VIGNES</Typography>
-              <Typography variant="body2">74330 LA BALME-DE-SILLINGY, FRANCE</Typography>
-              <Typography variant="body2">Siret : 38396013501745</Typography>
             </Box>
 
             {/* Invoice Items */}
