@@ -119,10 +119,7 @@ function InvoiceForm() {
         {/* Invoice Header */}
         <div className="grid grid-cols-2 gap-6 mb-8">
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-600 font-medium">Invoice Number:</span>
-              <span className="text-gray-800">{generateInvoiceNumber()}</span>
-            </div>
+            {/* Removed invoice number display */}
             <div className="flex items-center space-x-2">
               <Calendar className="w-5 h-5 text-gray-500" />
               <input
@@ -187,11 +184,16 @@ function InvoiceForm() {
                       <select
                         value={item.itemId}
                         onChange={(e) => {
-                          const selectedItem = MOCK_ITEMS.find(i => i.id === e.target.value);
-                          updateInvoiceItem(item.id, {
-                            itemId: e.target.value,
-                            unitPrice: selectedItem?.price || 0,
-                          });
+                          if (e.target.value === 'custom') {
+                            updateInvoiceItem(item.id, { itemId: 'custom', unitPrice: 0, customName: '' });
+                          } else {
+                            const selectedItem = MOCK_ITEMS.find(i => i.id === e.target.value);
+                            updateInvoiceItem(item.id, {
+                              itemId: e.target.value,
+                              unitPrice: selectedItem?.price || 0,
+                              customName: selectedItem?.name // now storing the item name
+                            });
+                          }
                         }}
                         className="form-select w-full rounded-md border-gray-300"
                       >
@@ -199,7 +201,17 @@ function InvoiceForm() {
                         {MOCK_ITEMS.map(i => (
                           <option key={i.id} value={i.id}>{i.name}</option>
                         ))}
+                        <option value="custom">Custom Item (Enter Manually)</option>
                       </select>
+                      {item.itemId === 'custom' && (
+                        <input
+                          type="text"
+                          value={item.customName || ''}
+                          onChange={(e) => updateInvoiceItem(item.id, { customName: e.target.value })}
+                          placeholder="Enter custom item name"
+                          className="form-input mt-2 rounded-md border-gray-300"
+                        />
+                      )}
                     </td>
                     <td className="px-4 py-2">
                       <input
