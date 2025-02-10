@@ -1,4 +1,18 @@
 import React from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Box from '@mui/material/Box';
 import type { Invoice } from '../types';
 
 interface InvoicePreviewProps {
@@ -11,138 +25,155 @@ function InvoicePreview({ invoice, isOpen, onClose }: InvoicePreviewProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-4xl p-8 rounded-lg overflow-y-auto max-h-[90vh]">
-        {/* Invoice Header */}
-        <div className="flex justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-bold mb-4">FACTURE</h1>
-            <div className="space-y-1">
-              <p className="font-bold">ALLROAD</p>
-              <p>268-270 rue de brémenent</p>
-              <p>93110 Rosny-Sous-Bois, France</p>
-              <p>Siret: 84422444400035</p>
-              <p>Email: allroad74trans@gmail.com</p>
-            </div>
-          </div>
-          <div className="text-right">
-            <img src="/allroad-logo.png" alt="ALLROAD" className="w-32 mb-4" />
-            <p className="font-bold">FACTURE N° : {invoice.number}</p>
-            <p>DATE : {invoice.date}</p>
-            <p>N° TVA : FR82383960135</p>
-            <p>N° client : CLT004</p>
-          </div>
-        </div>
-
-        {/* Client Info */}
-        <div className="mb-8">
-          <div className="bg-gray-100 p-4 rounded">
-            <h2 className="font-bold mb-2">CHRONOPOST</h2>
-            <p>2 CHEMIN DES VIGNES</p>
-            <p>74330 LA BALME-DE-SILLINGY, FRANCE</p>
-            <p>Siret : 38396013501745</p>
-          </div>
-        </div>
-
-        {/* Invoice Items */}
-        <table className="w-full mb-8">
-          <thead>
-            <tr className="border-b">
-              <th className="text-left py-2">Libellé</th>
-              <th className="text-right py-2">Prix Unitaire</th>
-              <th className="text-right py-2">Quantité</th>
-              <th className="text-right py-2">Montant HT</th>
-              <th className="text-right py-2">TVA</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoice.items?.map((item, index) => (
-              <tr key={index} className="border-b">
-                <td className="py-2">{item.itemId}</td>
-                <td className="text-right py-2">{item.unitPrice.toFixed(2)}€</td>
-                <td className="text-right py-2">{item.quantity}</td>
-                <td className="text-right py-2">{item.total.toFixed(2)}€</td>
-                <td className="text-right py-2">20.00%</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        {/* Totals */}
-        <div className="flex justify-end mb-8">
-          <div className="w-64">
-            <div className="flex justify-between py-1">
-              <span>TOTAL HT :</span>
-              <span>{invoice.subtotal?.toFixed(2)}€</span>
-            </div>
-            <div className="flex justify-between py-1">
-              <span>TVA 20% :</span>
-              <span>{invoice.tax?.toFixed(2)}€</span>
-            </div>
-            <div className="flex justify-between py-1">
-              <span>REMISE :</span>
-              <span>0.00€</span>
-            </div>
-            <div className="flex justify-between py-1 font-bold">
-              <span>TOTAL TTC :</span>
-              <span>{invoice.total?.toFixed(2)}€</span>
-            </div>
-          </div>
-        </div>
-
-        {/* TVA Details */}
-        <div className="mb-8">
-          <table className="w-full bg-gray-100">
-            <thead>
-              <tr>
-                <th className="text-left p-2">Code</th>
-                <th className="text-right p-2">Base HT</th>
-                <th className="text-right p-2">Taux</th>
-                <th className="text-right p-2">Montant</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="p-2">Normal</td>
-                <td className="text-right p-2">{invoice.subtotal?.toFixed(2)}€</td>
-                <td className="text-right p-2">20.00%</td>
-                <td className="text-right p-2">{invoice.tax?.toFixed(2)}€</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        {/* Payment Details */}
-        <div className="mb-8">
-          <p className="font-bold">RÈGLEMENT : virement de {invoice.total?.toFixed(2)}€</p>
-          <p>ECHÉANCE : {invoice.payments?.[0]?.dueDate}</p>
-        </div>
-
-        {/* Bank Details */}
-        <div className="bg-red-600 text-white p-4 -mx-8 -mb-8">
-          <h3 className="font-bold mb-2">Coordonnées bancaires</h3>
-          <p>Nom: SUMLIP</p>
-          <p>IBAN: FR11SUMU9903651124369B</p>
-          <p>BIC: SUMUJE22XXX</p>
-        </div>
-
-        {/* Footer */}
-        <div className="text-xs text-center mt-4">
-          <p>Code NAF (APE) 5229B - N° RCS 844 224 444 R.C.S. Bobigny - SASU au capital social de 31 500,00 € -</p>
-          <p>Siret : 84422444400035 - N° TVA FR46844224444</p>
-        </div>
-
-        {/* Close Button */}
-        <button
+    <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="lg">
+      <DialogTitle sx={{ m: 0, p: 2 }}>
+        <Typography variant="h4">FACTURE</Typography>
+        <IconButton
+          aria-label="close"
           onClick={onClose}
-          className="fixed top-4 right-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100"
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+          }}
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-    </div>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent dividers>
+        <Card variant="outlined" sx={{ p: 2 }}>
+          <CardContent>
+            {/* Header */}
+            <Box display="flex" justifyContent="space-between" mb={3}>
+              <Box>
+                <Typography variant="h5" fontWeight="bold">ALLROAD</Typography>
+                <Typography variant="body2">268-270 rue de brémenent</Typography>
+                <Typography variant="body2">93110 Rosny-Sous-Bois, France</Typography>
+                <Typography variant="body2">Siret: 84422444400035</Typography>
+                <Typography variant="body2">Email: allroad74trans@gmail.com</Typography>
+              </Box>
+              <Box textAlign="right">
+                <img src="/allroad-logo.png" alt="ALLROAD" style={{ width: 120, marginBottom: 8 }} />
+                <Typography variant="subtitle1" fontWeight="bold">FACTURE N° : {invoice.number}</Typography>
+                <Typography variant="body2">DATE : {invoice.date}</Typography>
+                <Typography variant="body2">N° TVA : FR82383960135</Typography>
+                <Typography variant="body2">N° client : CLT004</Typography>
+              </Box>
+            </Box>
+
+            {/* Client Info */}
+            <Box mb={3} p={2} bgcolor="grey.100" borderRadius={1}>
+              <Typography variant="h6" fontWeight="bold">CHRONOPOST</Typography>
+              <Typography variant="body2">2 CHEMIN DES VIGNES</Typography>
+              <Typography variant="body2">74330 LA BALME-DE-SILLINGY, FRANCE</Typography>
+              <Typography variant="body2">Siret : 38396013501745</Typography>
+            </Box>
+
+            {/* Invoice Items */}
+            <Table sx={{ mb: 3 }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Libellé</TableCell>
+                  <TableCell align="right">Prix Unitaire</TableCell>
+                  <TableCell align="right">Quantité</TableCell>
+                  <TableCell align="right">Montant HT</TableCell>
+                  <TableCell align="right">TVA</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {invoice.items?.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{item.itemId}</TableCell>
+                    <TableCell align="right">{item.unitPrice.toFixed(2)}€</TableCell>
+                    <TableCell align="right">{item.quantity}</TableCell>
+                    <TableCell align="right">{item.total.toFixed(2)}€</TableCell>
+                    <TableCell align="right">20.00%</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+            {/* Totals */}
+            <Box display="flex" justifyContent="flex-end" mb={3}>
+              <Box width={240}>
+                <Box display="flex" justifyContent="space-between" py={0.5}>
+                  <Typography variant="body2">TOTAL HT :</Typography>
+                  <Typography variant="body2">{invoice.subtotal?.toFixed(2)}€</Typography>
+                </Box>
+                <Box display="flex" justifyContent="space-between" py={0.5}>
+                  <Typography variant="body2">TVA 20% :</Typography>
+                  <Typography variant="body2">{invoice.tax?.toFixed(2)}€</Typography>
+                </Box>
+                <Box display="flex" justifyContent="space-between" py={0.5}>
+                  <Typography variant="body2">REMISE :</Typography>
+                  <Typography variant="body2">0.00€</Typography>
+                </Box>
+                <Box display="flex" justifyContent="space-between" py={0.5} fontWeight="bold">
+                  <Typography variant="body1">TOTAL TTC :</Typography>
+                  <Typography variant="body1">{invoice.total?.toFixed(2)}€</Typography>
+                </Box>
+              </Box>
+            </Box>
+
+            {/* TVA Details */}
+            <Box mb={3}>
+              <Table size="small" sx={{ backgroundColor: 'grey.100' }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Code</TableCell>
+                    <TableCell align="right">Base HT</TableCell>
+                    <TableCell align="right">Taux</TableCell>
+                    <TableCell align="right">Montant</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Normal</TableCell>
+                    <TableCell align="right">{invoice.subtotal?.toFixed(2)}€</TableCell>
+                    <TableCell align="right">20.00%</TableCell>
+                    <TableCell align="right">{invoice.tax?.toFixed(2)}€</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Box>
+
+            {/* Payment Details */}
+            <Box mb={3}>
+              <Typography variant="body2" fontWeight="bold">
+                RÈGLEMENT : virement de {invoice.total?.toFixed(2)}€
+              </Typography>
+              <Typography variant="body2">
+                ECHÉANCE : {invoice.payments?.[0]?.dueDate}
+              </Typography>
+            </Box>
+
+            {/* Bank Details */}
+            <Box mb={3} p={2} bgcolor="error.main" color="white" borderRadius={1}>
+              <Typography variant="h6" fontWeight="bold" mb={1}>Coordonnées bancaires</Typography>
+              <Typography variant="body2">
+                Nom: {invoice.bankDetails?.name || 'N/A'}
+              </Typography>
+              <Typography variant="body2">
+                IBAN: {invoice.bankDetails?.iban || 'N/A'}
+              </Typography>
+              <Typography variant="body2">
+                BIC: {invoice.bankDetails?.bic || 'N/A'}
+              </Typography>
+            </Box>
+
+            {/* Footer */}
+            <Box textAlign="center">
+              <Typography variant="caption">
+                Code NAF (APE) 5229B - N° RCS 844 224 444 R.C.S. Bobigny - SASU au capital social de 31 500,00 € -
+              </Typography>
+              <Typography variant="caption">
+                Siret : 84422444400035 - N° TVA FR46844224444
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card>
+      </DialogContent>
+    </Dialog>
   );
 }
 

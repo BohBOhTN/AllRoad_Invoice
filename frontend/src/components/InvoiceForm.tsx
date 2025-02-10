@@ -18,6 +18,12 @@ const MOCK_ROUTES: DeliveryRoute[] = [
   { id: '2', code: 'RT002', name: 'Suburban Route' },
 ];
 
+// New: Mock bank accounts
+const MOCK_BANK_ACCOUNTS: { id: string; name: string; iban: string; bic: string }[] = [
+  { id: 'bank1', name: 'Bank One', iban: 'FR76 1234 5678 9012 3456 7890 123', bic: 'BANKFRPP' },
+  { id: 'bank2', name: 'Bank Two', iban: 'FR76 0987 6543 2109 8765 4321 098', bic: 'BKTKFRPP' },
+];
+
 function InvoiceForm() {
   const [invoice, setInvoice] = useState<Partial<Invoice>>({
     date: new Date().toISOString().split('T')[0],
@@ -87,12 +93,18 @@ function InvoiceForm() {
 
   const handleGenerateInvoice = () => {
     const { subtotal, tax, total } = calculateTotals();
+    // Update bankDetails if there is a bank_transfer payment with a selected bank account
+    const bankPayment = invoice.payments?.find(p => p.method === 'bank_transfer' && (p as any).bankAccountId);
+    const bankDetails = bankPayment
+      ? MOCK_BANK_ACCOUNTS.find(account => account.id === (bankPayment as any).bankAccountId)
+      : undefined;
     setInvoice(prev => ({
       ...prev,
       number: generateInvoiceNumber(),
       subtotal,
       tax,
       total,
+      bankDetails,
     }));
     setShowPreview(true);
   };
@@ -274,41 +286,62 @@ function InvoiceForm() {
           </div>
 
           {invoice.payments?.map((payment, index) => (
-            <div key={index} className="grid grid-cols-3 gap-4 mb-4">
-              <select
-                value={payment.method}
-                onChange={(e) => {
-                  const newPayments = [...(invoice.payments || [])];
-                  newPayments[index] = { ...payment, method: e.target.value as Payment['method'] };
-                  setInvoice(prev => ({ ...prev, payments: newPayments }));
-                }}
-                className="form-select rounded-md border-gray-300"
-              >
-                <option value="bank_transfer">Bank Transfer</option>
-                <option value="credit_card">Credit Card</option>
-                <option value="cash">Cash</option>
-              </select>
-              <input
-                type="number"
-                value={payment.amount}
-                onChange={(e) => {
-                  const newPayments = [...(invoice.payments || [])];
-                  newPayments[index] = { ...payment, amount: Number(e.target.value) };
-                  setInvoice(prev => ({ ...prev, payments: newPayments }));
-                }}
-                placeholder="Amount"
-                className="form-input rounded-md border-gray-300"
-              />
-              <input
-                type="date"
-                value={payment.dueDate}
-                onChange={(e) => {
-                  const newPayments = [...(invoice.payments || [])];
-                  newPayments[index] = { ...payment, dueDate: e.target.value };
-                  setInvoice(prev => ({ ...prev, payments: newPayments }));
-                }}
-                className="form-input rounded-md border-gray-300"
-              />
+            <div key={index} className="mb-4">
+              <div className="grid grid-cols-3 gap-4">
+                <select
+                  value={payment.method}
+                  onChange={(e) => {
+                    const newPayments = [...(invoice.payments || [])];
+                    newPayments[index] = { ...payment, method: e.target.value as Payment['method'] };
+                    setInvoice(prev => ({ ...prev, payments: newPayments }));
+                  }}
+                  className="form-select rounded-md border-gray-300"
+                >
+                  <option value="bank_transfer">Bank Transfer</option>
+                  <option value="credit_card">Credit Card</option>
+                  <option value="cash">Cash</option>
+                </select>
+                <input
+                  type="number"
+                  value={payment.amount}
+                  onChange={(e) => {
+                    const newPayments = [...(invoice.payments || [])];
+                    newPayments[index] = { ...payment, amount: Number(e.target.value) };
+                    setInvoice(prev => ({ ...prev, payments: newPayments }));
+                  }}
+                  placeholder="Amount"
+                  className="form-input rounded-md border-gray-300"
+                />
+                <input
+                  type="date"
+                  value={payment.dueDate}
+                  onChange={(e) => {
+                    const newPayments = [...(invoice.payments || [])];
+                    newPayments[index] = { ...payment, dueDate: e.target.value };
+                    setInvoice(prev => ({ ...prev, payments: newPayments }));
+                  }}
+                  className="form-input rounded-md border-gray-300"
+                />
+              </div>
+              {/* Render bank account dropdown if payment method is bank_transfer */}
+              {payment.method === 'bank_transfer' && (
+                <select
+                  value={(payment as any).bankAccountId || ''}
+                  onChange={(e) => {
+                    const newPayments = [...(invoice.payments || [])];
+                    newPayments[index] = { ...payment, bankAccountId: e.target.value };
+                    setInvoice(prev => ({ ...prev, payments: newPayments }));
+                  }}
+                  className="form-select rounded-md border-gray-300 mt-2"
+                >
+                  <option value="">Select bank account</option>
+                  {MOCK_BANK_ACCOUNTS.map(account => (
+                    <option key={account.id} value={account.id}>
+                      {account.name} | {account.iban} | {account.bic}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
           ))}
         </div>
