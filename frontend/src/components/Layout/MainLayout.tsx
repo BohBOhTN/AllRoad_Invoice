@@ -20,14 +20,12 @@ export default function MainLayout() {
   }
 
   return (
-    <div className="flex h-screen">
-      {/* Sidebar */}
-      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72">
-        <Sidebar />
-      </div>
+    <div className="flex min-h-screen"> {/* Changed container for scrolling */}
+      {/* Sidebar rendered on all screen sizes */}
+      <Sidebar />
 
-      {/* Main content */}
-      <div className="lg:pl-72 flex flex-col flex-1">
+      {/* Main content without extra left padding */}
+      <div className="flex flex-col flex-1">
         <Header />
         <main className="flex-1 p-6 bg-gray-50">
           <Outlet />
