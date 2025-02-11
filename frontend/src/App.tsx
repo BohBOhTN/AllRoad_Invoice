@@ -14,6 +14,7 @@ import InvoiceDetailPage from './pages/InvoiceDetailPage';
 import ClientForm from './components/ClientForm';
 import DeliveryRouteForm from './components/DeliveryRouteForm';
 import ItemForm from './components/ItemForm';
+import BankAccountsPage from './pages/BankAccountsPage'; 
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <Route path="items/create" element={<ItemForm />} />
             <Route path="items/edit/:id" element={<ItemForm />} />
             <Route path="settings" element={<SettingsPage />} />
+            <Route path="bank-accounts" element={<BankAccountsPage />} /> {/* New route */}
             {/* Add more routes here */}
           </Route>
         </Routes>

@@ -20,7 +20,7 @@ export default function MainLayout() {
   }
 
   return (
-    <div className="flex min-h-screen"> {/* Changed container for scrolling */}
+    <div className="flex min-h-screen">
       {/* Sidebar rendered on all screen sizes */}
       <Sidebar />
 

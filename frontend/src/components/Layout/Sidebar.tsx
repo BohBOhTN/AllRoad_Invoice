@@ -8,23 +8,33 @@ import {
   Package,
   Settings,
   LogOut,
-  Menu
+  Menu,
+  Banknote,
+  ChevronDown,
+  ChevronRight
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Invoices', href: '/invoices', icon: FileText },
-  { name: 'Create Invoice', href: '/invoices/create', icon: FileText },
+  { name: 'Invoices', href: '/invoices', icon: FileText, children: [
+    { name: 'Create Invoice', href: '/invoices/create', icon: FileText }
+  ]},
   { name: 'Clients', href: '/clients', icon: Users },
   { name: 'Delivery Routes', href: '/routes', icon: Truck },
   { name: 'Items', href: '/items', icon: Package },
   { name: 'Settings', href: '/settings', icon: Settings },
+  { name: 'Bank Accounts', href: '/bank-accounts', icon: Banknote },
 ];
 
 export default function Sidebar() {
   const { signOut } = useAuth();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({});
+
+  const toggleExpand = (name: string) => {
+    setExpanded(prev => ({ ...prev, [name]: !prev[name] }));
+  };
 
   const sidebarContent = (
     <div className="flex flex-col bg-gray-900 min-h-screen">
@@ -35,18 +45,44 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-4 py-4">
         {navigation.map((item) => (
-          <NavLink
-            key={item.name}
-            to={item.href}
-            className={({ isActive }) =>
-              `flex items-center px-4 py-2 text-sm font-medium rounded-md ${
-                isActive ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-              }`
-            }
-          >
-            <item.icon className="mr-3 h-5 w-5" />
-            {item.name}
-          </NavLink>
+          <div key={item.name}>
+            <div className="flex items-center justify-between">
+              <NavLink
+                to={item.href}
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 text-sm font-medium rounded-md ${
+                    isActive ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  }`
+                }
+              >
+                <item.icon className="mr-3 h-5 w-5" />
+                {item.name}
+              </NavLink>
+              {item.children && (
+                <button onClick={() => toggleExpand(item.name)} className="text-gray-300 hover:text-white">
+                  {expanded[item.name] ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                </button>
+              )}
+            </div>
+            {item.children && expanded[item.name] && (
+              <div className="ml-6 mt-2 space-y-1">
+                {item.children.map((child) => (
+                  <NavLink
+                    key={child.name}
+                    to={child.href}
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 text-sm font-medium rounded-md ${
+                        isActive ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                      }`
+                    }
+                  >
+                    <child.icon className="mr-3 h-5 w-5" />
+                    {child.name}
+                  </NavLink>
+                ))}
+              </div>
+            )}
+          </div>
         ))}
       </nav>
       {/* Logout button */}
