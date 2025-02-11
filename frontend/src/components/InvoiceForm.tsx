@@ -117,7 +117,7 @@ function InvoiceForm() {
         <h1 className="text-3xl font-bold text-gray-800 mb-8">Create New Invoice</h1>
         
         {/* Invoice Header */}
-        <div className="grid grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-2 gap-6 mb-8 border-b pb-4">
           <div className="space-y-4">
             {/* Removed invoice number display */}
             <div className="flex items-center space-x-2">
@@ -133,7 +133,7 @@ function InvoiceForm() {
         </div>
 
         {/* Client Selection */}
-        <div className="mb-8">
+        <div className="mb-8 border-b pb-4">
           <div className="flex items-center space-x-2 mb-4">
             <Users className="w-5 h-5 text-gray-500" />
             <h2 className="text-xl font-semibold text-gray-800">Client Information</h2>
@@ -151,7 +151,7 @@ function InvoiceForm() {
         </div>
 
         {/* Items Section */}
-        <div className="mb-8">
+        <div className="mb-8 border-b pb-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
               <Package className="w-5 h-5 text-gray-500" />
@@ -264,7 +264,7 @@ function InvoiceForm() {
         </div>
 
         {/* Delivery Route */}
-        <div className="mb-8">
+        <div className="mb-8 border-b pb-4">
           <div className="flex items-center space-x-2 mb-4">
             <Truck className="w-5 h-5 text-gray-500" />
             <h2 className="text-xl font-semibold text-gray-800">Delivery Route</h2>
@@ -282,7 +282,7 @@ function InvoiceForm() {
         </div>
 
         {/* Payment Section */}
-        <div className="mb-8">
+        <div className="mb-8 border-b pb-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
               <CreditCard className="w-5 h-5 text-gray-500" />
