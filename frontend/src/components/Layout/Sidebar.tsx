@@ -14,6 +14,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { MdAttachMoney } from 'react-icons/md';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -25,6 +26,7 @@ const navigation = [
   { name: 'Items', href: '/items', icon: Package },
   { name: 'Settings', href: '/settings', icon: Settings },
   { name: 'Bank Accounts', href: '/bank-accounts', icon: Banknote },
+  { name: 'Expenses', href: '/expenses', icon: MdAttachMoney },
 ];
 
 export default function Sidebar() {

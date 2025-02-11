@@ -15,6 +15,9 @@ import ClientForm from './components/ClientForm';
 import DeliveryRouteForm from './components/DeliveryRouteForm';
 import ItemForm from './components/ItemForm';
 import BankAccountsPage from './pages/BankAccountsPage'; 
+// New imports for Expenses
+import ExpensesPage from './pages/ExpensesPage';
+import { ExpenseForm } from './components/ExpenseForm';
 
 function App() {
   return (
@@ -38,8 +41,10 @@ function App() {
             <Route path="items/create" element={<ItemForm />} />
             <Route path="items/edit/:id" element={<ItemForm />} />
             <Route path="settings" element={<SettingsPage />} />
-            <Route path="bank-accounts" element={<BankAccountsPage />} /> {/* New route */}
-            {/* Add more routes here */}
+            <Route path="bank-accounts" element={<BankAccountsPage />} />
+            {/* New routes for expenses */}
+            <Route path="expenses" element={<ExpensesPage />} />
+            <Route path="expenses/create" element={<ExpenseForm />} />
           </Route>
         </Routes>
       </AuthProvider>
