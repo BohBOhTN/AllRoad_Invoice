@@ -22,7 +22,6 @@ export default function Header() {
             <Bell className="h-6 w-6" />
           </button>
 
-          {/* Profile dropdown */}
           <div className="flex items-center gap-x-4">
             <div className="h-8 w-8 rounded-full bg-gray-900 flex items-center justify-center">
               <span className="text-sm font-medium text-white">
